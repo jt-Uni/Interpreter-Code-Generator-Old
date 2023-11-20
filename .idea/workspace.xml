@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0b707fcc-3803-4676-93a1-87f910a88d30" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gradle/8.2/dependencies-accessors/dependencies-accessors.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.2/dependencies-accessors/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.2/executionHistory/executionHistory.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.2/fileChanges/last-build.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.2/fileHashes/fileHashes.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.2/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/vcs-1/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task1/src/SimpleLangBaseListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task1/src/SimpleLangListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ANTLR_LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ANTLR_LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RARS_License.txt" beforeDir="false" afterPath="$PROJECT_DIR$/RARS_License.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/task1/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1/src/SimpleLang.g4" beforeDir="false" afterPath="$PROJECT_DIR$/task1/src/SimpleLang.g4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1/src/SimpleLang.interp" beforeDir="false" afterPath="$PROJECT_DIR$/task1/src/SimpleLang.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1/src/SimpleLang.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/task1/src/SimpleLang.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1/src/SimpleLangInterpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/task1/src/SimpleLangInterpreter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1/src/SimpleLangLexer.interp" beforeDir="false" afterPath="$PROJECT_DIR$/task1/src/SimpleLangLexer.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1/src/SimpleLangLexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/task1/src/SimpleLangLexer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1/src/SimpleLangLexer.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/task1/src/SimpleLangLexer.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1/src/SimpleLangParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/task1/src/SimpleLangParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1/src/SimpleLangVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/task1/src/SimpleLangVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1/src/Task1.java" beforeDir="false" afterPath="$PROJECT_DIR$/task1/src/Task1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1/src/Task1Tester.java" beforeDir="false" afterPath="$PROJECT_DIR$/task1/src/Task1Tester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00001.simp" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00001.simp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00001.simp.answers" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00001.simp.answers" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00001.simp.args" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00001.simp.args" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00002.simp" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00002.simp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00002.simp.answers" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00002.simp.answers" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00002.simp.args" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00002.simp.args" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00003.simp" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00003.simp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00003.simp.answers" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00003.simp.answers" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00003.simp.args" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00003.simp.args" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00004.simp" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00004.simp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00004.simp.answers" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00004.simp.answers" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00004.simp.args" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00004.simp.args" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00005.simp" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00005.simp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00005.simp.answers" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00005.simp.answers" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00005.simp.args" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00005.simp.args" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00006.simp" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00006.simp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00006.simp.answers" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00006.simp.answers" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1tests/00006.simp.args" beforeDir="false" afterPath="$PROJECT_DIR$/task1tests/00006.simp.args" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/task2/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2/src/SimpleLang.g4" beforeDir="false" afterPath="$PROJECT_DIR$/task2/src/SimpleLang.g4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2/src/SimpleLang.interp" beforeDir="false" afterPath="$PROJECT_DIR$/task2/src/SimpleLang.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2/src/SimpleLangCodeGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/task2/src/SimpleLangCodeGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2/src/SimpleLangLexer.interp" beforeDir="false" afterPath="$PROJECT_DIR$/task2/src/SimpleLangLexer.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2/src/Task2.java" beforeDir="false" afterPath="$PROJECT_DIR$/task2/src/Task2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2/src/Task2Tester.java" beforeDir="false" afterPath="$PROJECT_DIR$/task2/src/Task2Tester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00001.simp" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00001.simp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00001.simp.answers" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00001.simp.answers" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00001.simp.args" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00001.simp.args" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00002.simp" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00002.simp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00002.simp.answers" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00002.simp.answers" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00002.simp.args" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00002.simp.args" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00003.simp" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00003.simp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00003.simp.answers" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00003.simp.answers" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00003.simp.args" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00003.simp.args" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00004.simp" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00004.simp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00004.simp.answers" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00004.simp.answers" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00004.simp.args" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00004.simp.args" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00005.simp" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00005.simp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00005.simp.answers" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00005.simp.answers" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00005.simp.args" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00005.simp.args" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00006.simp" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00006.simp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00006.simp.answers" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00006.simp.answers" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task2tests/00006.simp.args" beforeDir="false" afterPath="$PROJECT_DIR$/task2tests/00006.simp.args" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="2YRhAsQOIreHiNsDmxMKSZPurOt" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/James/projects/Interpreter-Code-Generator/task1/src",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Task1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Task1" />
+      <module name="compilers-coursework.task1.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="Interpreter-Code-Generator" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="Interpreter-Code-Generator" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Task1" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0b707fcc-3803-4676-93a1-87f910a88d30" name="Changes" comment="" />
+      <created>1700494161266</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1700494161266</updated>
+      <workItem from="1700494164811" duration="4033000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

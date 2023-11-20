@@ -28,4 +28,5 @@ task runtests(type: JavaExec) {
 
 dependencies {
     implementation files ('../antlr-4.13.1-complete.jar')
+    implementation project(path: ':task2')
 }

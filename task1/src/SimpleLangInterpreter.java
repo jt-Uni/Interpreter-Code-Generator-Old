@@ -5,36 +5,30 @@ import java.util.*;
 
 public class SimpleLangInterpreter extends AbstractParseTreeVisitor<Integer> implements SimpleLangVisitor<Integer> {
 
-    private final Map<String, SimpleLangParser.DecContext> global_funcs = new HashMap<>();
+    private final Map<String, SimpleLangParser.DecContext> global_func = new HashMap<>();
     private final Stack<Map<String, Integer>> frames = new Stack<>();
 
-    public Integer visitProgram(SimpleLangParser.ProgContext ctx, String[] args)
-    {
-
+    public Integer visitProgram(SimpleLangParser.ProgContext ctx, String[] args) {
         for (int i = 0; i < ctx.dec().size(); ++i) {
-
             SimpleLangParser.DecContext dec = ctx.dec(i);
-            SimpleLangParser.Typed_idfrContext typedIdfr = dec.typed_idfr(0);
-            global_funcs.put(typedIdfr.Idfr().getText(), dec);
-
+            global_func.put(dec.Idfr().getText(), dec);
         }
 
-        SimpleLangParser.DecContext main = global_funcs.get("main");
+        SimpleLangParser.DecContext main = global_func.get("main");
 
         Map<String, Integer> newFrame = new HashMap<>();
-        for (int i = 0; i < args.length; ++i) {
-            if (args[i].equals("true")) {
-                newFrame.put(main.typed_idfr().get(i).Idfr().getText(), 1);
-            } else if (args[i].equals("false")) {
-                newFrame.put(main.typed_idfr().get(i).Idfr().getText(), 0);
+        for (String arg : args) {
+            if (arg.equals("true")) {
+                newFrame.put(main.Idfr().getText(), 1);
+            } else if (arg.equals("false")) {
+                newFrame.put(main.Idfr().getText(), 0);
             } else {
-                newFrame.put(main.typed_idfr().get(i).Idfr().getText(), Integer.parseInt(args[i]));
+                newFrame.put(main.Idfr().getText(), Integer.parseInt(arg));
             }
         }
 
         frames.push(newFrame);
         return visit(main);
-
     }
 
     @Override public Integer visitProg(SimpleLangParser.ProgContext ctx)
@@ -53,35 +47,44 @@ public class SimpleLangInterpreter extends AbstractParseTreeVisitor<Integer> imp
 
     }
 
-    @Override public Integer visitTyped_idfr(SimpleLangParser.Typed_idfrContext ctx)
-    {
-        throw new RuntimeException("Should not be here!");
-    }
-
-    @Override public Integer visitType(SimpleLangParser.TypeContext ctx)
-    {
-        throw new RuntimeException("Should not be here!");
+    @Override
+    public Integer visitVardec(SimpleLangParser.VardecContext ctx) {
+        return null;
     }
 
     @Override public Integer visitBody(SimpleLangParser.BodyContext ctx) {
 
         Integer returnValue = null;
-        for (int i = 0; i < ctx.ene.size(); ++i) {
-            SimpleLangParser.ExpContext exp = ctx.ene.get(i);
+
+        for (int i = 0; i < ctx.exp().size(); ++i) {
+            SimpleLangParser.ExpContext exp = ctx.exp(i);
             returnValue = visit(exp);
         }
         return returnValue;
 
     }
 
-    @Override public Integer visitBlock(SimpleLangParser.BlockContext ctx)
-    {
+    @Override
+    public Integer visitBlock(SimpleLangParser.BlockContext ctx) {
         Integer returnValue = null;
-        for (int i = 0; i < ctx.ene.size(); ++i) {
-            SimpleLangParser.ExpContext exp = ctx.ene.get(i);
+        SimpleLangParser.EneContext eneContext = ctx.ene();
+
+        for (int i = 0; i < eneContext.exp().size(); ++i) {
+            SimpleLangParser.ExpContext exp = eneContext.exp(i);
             returnValue = visit(exp);
         }
+
         return returnValue;
+    }
+
+    @Override
+    public Integer visitEne(SimpleLangParser.EneContext ctx) {
+        return null;
+    }
+
+    @Override
+    public Integer visitBoolExpr(SimpleLangParser.BoolExprContext ctx) {
+        return null;
     }
 
     @Override public Integer visitAssignExpr(SimpleLangParser.AssignExprContext ctx)
@@ -94,64 +97,27 @@ public class SimpleLangInterpreter extends AbstractParseTreeVisitor<Integer> imp
     }
 
     @Override public Integer visitBinOpExpr(SimpleLangParser.BinOpExprContext ctx) {
-
         SimpleLangParser.ExpContext operand1 = ctx.exp(0);
         Integer oprnd1 = visit(operand1);
         SimpleLangParser.ExpContext operand2 = ctx.exp(1);
         Integer oprnd2 = visit(operand2);
 
-        switch (((TerminalNode) (ctx.binop().getChild(0))).getSymbol().getType()) {
-
-            case SimpleLangParser.Eq ->  {
-
-                return ((Objects.equals(oprnd1, oprnd2)) ? 1 : 0);
-
-            }
-            case SimpleLangParser.Less -> {
-
-                return ((oprnd1 < oprnd2) ? 1 : 0);
-
-            }
-            case SimpleLangParser.LessEq -> {
-
-                return ((oprnd1 <= oprnd2) ? 1 : 0);
-
-            }
-            case SimpleLangParser.Plus -> {
-
-                return oprnd1 + oprnd2;
-
-            }
-            case SimpleLangParser.Minus -> {
-
-                return oprnd1 - oprnd2;
-
-            }
-            case SimpleLangParser.Times -> {
-
-                return oprnd1 * oprnd2;
-
-            }
-            default -> {
-                throw new RuntimeException("Shouldn't be here - wrong binary operator.");
-            }
-
-        }
-
+        return switch (((TerminalNode) (ctx.BinOP().getChild(0))).getSymbol().getType()) {
+            case SimpleLangParser.Eq -> (Objects.equals(oprnd1, oprnd2)) ? 1 : 0;
+            case SimpleLangParser.Less -> (oprnd1 < oprnd2) ? 1 : 0;
+            case SimpleLangParser.LessEq -> (oprnd1 <= oprnd2) ? 1 : 0;
+            case SimpleLangParser.Greater -> (oprnd1 > oprnd2) ? 1 : 0;
+            case SimpleLangParser.GreaterEq -> (oprnd1 >= oprnd2) ? 1 : 0;
+            case SimpleLangParser.Plus -> oprnd1 + oprnd2;
+            case SimpleLangParser.Minus -> oprnd1 - oprnd2;
+            case SimpleLangParser.Times -> oprnd1 * oprnd2;
+            default -> throw new RuntimeException("Shouldn't be here - wrong binary operator.");
+        };
     }
-    @Override public Integer visitInvokeExpr(SimpleLangParser.InvokeExprContext ctx)
-    {
 
-        SimpleLangParser.DecContext dec = global_funcs.get(ctx.Idfr().getText());
-        SimpleLangParser.Typed_idfrContext param = dec.vardec.get(0);
-        Map<String, Integer> newFrame = new HashMap<>();
-
-        SimpleLangParser.ExpContext exp = ctx.args.get(0);
-        newFrame.put(param.Idfr().getText(), visit(exp));
-
-        frames.push(newFrame);
-        return visit(dec);
-
+    @Override
+    public Integer visitCallFunExpr(SimpleLangParser.CallFunExprContext ctx) {
+        return null;
     }
 
     @Override public Integer visitBlockExpr(SimpleLangParser.BlockExprContext ctx) {
@@ -175,6 +141,16 @@ public class SimpleLangInterpreter extends AbstractParseTreeVisitor<Integer> imp
 
         }
 
+    }
+
+    @Override
+    public Integer visitWhileExpr(SimpleLangParser.WhileExprContext ctx) {
+        return null;
+    }
+
+    @Override
+    public Integer visitForExpr(SimpleLangParser.ForExprContext ctx) {
+        return null;
     }
 
     @Override public Integer visitPrintExpr(SimpleLangParser.PrintExprContext ctx) {
@@ -203,6 +179,21 @@ public class SimpleLangInterpreter extends AbstractParseTreeVisitor<Integer> imp
         return null;
     }
 
+    @Override
+    public Integer visitNewlineExpr(SimpleLangParser.NewlineExprContext ctx) {
+        return null;
+    }
+
+    @Override
+    public Integer visitSkipExpr(SimpleLangParser.SkipExprContext ctx) {
+        return null;
+    }
+
+    @Override
+    public Integer visitArgs(SimpleLangParser.ArgsContext ctx) {
+        return null;
+    }
+
     @Override public Integer visitIdExpr(SimpleLangParser.IdExprContext ctx)
     {
         return frames.peek().get(ctx.Idfr().getText());
@@ -214,23 +205,4 @@ public class SimpleLangInterpreter extends AbstractParseTreeVisitor<Integer> imp
         return Integer.parseInt(ctx.IntLit().getText());
 
     }
-    @Override public Integer visitEqBinop(SimpleLangParser.EqBinopContext ctx) {
-        throw new RuntimeException("Should not be here!");
-    }
-    @Override public Integer visitLessBinop(SimpleLangParser.LessBinopContext ctx) {
-        throw new RuntimeException("Should not be here!");
-    }
-    @Override public Integer visitLessEqBinop(SimpleLangParser.LessEqBinopContext ctx) {
-        throw new RuntimeException("Should not be here!");
-    }
-    @Override public Integer visitPlusBinop(SimpleLangParser.PlusBinopContext ctx) {
-        throw new RuntimeException("Should not be here!");
-    }
-    @Override public Integer visitMinusBinop(SimpleLangParser.MinusBinopContext ctx) {
-        throw new RuntimeException("Should not be here!");
-    }
-    @Override public Integer visitTimesBinop(SimpleLangParser.TimesBinopContext ctx) {
-        throw new RuntimeException("Should not be here!");
-    }
-
 }

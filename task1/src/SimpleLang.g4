@@ -3,32 +3,61 @@ grammar SimpleLang;
 prog: dec+ EOF ;
 dec:	Type Idfr '(' vardec ')' body ;
 vardec:	(Type Idfr (',' Type Idfr)*)? ;
-body:	'{' (Type Idfr ':=' expr ';')* ene '}';
+body:   '{' (Type Idfr ':=' exp ';')* exp '}';
 block:	'{' ene '}';
-ene:	expr (';' expr)*;
+ene:    exp (';' exp)*;
 
-expr
+exp
 :   BoolLit                             # BoolExpr
 |	Idfr                                # IdExpr
 |	IntLit                              # IntExpr
-|	Idfr ':=' expr                      # AssignExpr
-|	'(' expr op=BinOP expr ')'          # BinOpExpr
+|	Idfr ':=' exp                       # AssignExpr
+|	'(' exp op=BinOP exp ')'            # BinOpExpr
 |	Idfr '(' args ')'                   # CallFunExpr
 |	block                               # BlockExpr
-|	'if' expr 'then' block 'else' block # IfExpr
-|	'while' expr 'do' block             # WhileExpr
-|	'repeat' block 'until' expr         # ForExpr
-|	'print' expr                        # PrintExpr
+|	'if' exp 'then' block 'else' block  # IfExpr
+|	'while' exp 'do' block              # WhileExpr
+|	'repeat' block 'until' exp          # ForExpr
+|	'print' exp                         # PrintExpr
 |	'space'                             # SpaceExpr
 |	'newline'                           # NewlineExpr
 |	'skip'                              # SkipExpr
 ;
 
-args:	(expr (',' expr)*)?;
-BinOP:	'=='  | '<' | '>' | '<='  | '>='
-|	 '+' | '-' | '*' | '/' | '&' | '|' | '^';
-Type:	'int' | 'bool' | 'unit';
+args:	(exp (',' exp)*)?;
+BinOP
+:   Eq
+|   Less
+|   Greater
+|   LessEq
+|   GreaterEq
+|	Plus
+|   Minus
+|   Times
+|   Divide
+|   And
+|   Or
+|   Caret
+;
+
 BoolLit:	'true' | 'false';
+Type:	'int' | 'bool' | 'unit';
 Idfr:	[a-z][a-zA-Z0-9_]*;
 IntLit:	'0' | ('-'? [1-9][0-9]*);
+
+Space: 'space';
+NewLine: 'newline';
+Eq: '==';
+Less: '<';
+Greater: '>';
+LessEq: '<=';
+GreaterEq: '>=';
+Plus: '+';
+Minus: '-';
+Times: '*';
+Divide: '/';
+And: '&';
+Or: '|';
+Caret: '^';
+
 WS     : [ \n\r\t]+ -> skip ;
