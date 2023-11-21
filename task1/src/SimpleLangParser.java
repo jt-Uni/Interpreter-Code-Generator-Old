@@ -304,11 +304,8 @@ public class SimpleLangParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class BodyContext extends ParserRuleContext {
-		public List<ExpContext> exp() {
-			return getRuleContexts(ExpContext.class);
-		}
-		public ExpContext exp(int i) {
-			return getRuleContext(ExpContext.class,i);
+		public EneContext ene() {
+			return getRuleContext(EneContext.class,0);
 		}
 		public List<TerminalNode> Type() { return getTokens(SimpleLangParser.Type); }
 		public TerminalNode Type(int i) {
@@ -317,6 +314,12 @@ public class SimpleLangParser extends Parser {
 		public List<TerminalNode> Idfr() { return getTokens(SimpleLangParser.Idfr); }
 		public TerminalNode Idfr(int i) {
 			return getToken(SimpleLangParser.Idfr, i);
+		}
+		public List<ExpContext> exp() {
+			return getRuleContexts(ExpContext.class);
+		}
+		public ExpContext exp(int i) {
+			return getRuleContext(ExpContext.class,i);
 		}
 		public BodyContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -369,7 +372,7 @@ public class SimpleLangParser extends Parser {
 				_la = _input.LA(1);
 			}
 			setState(54);
-			exp();
+			ene();
 			setState(55);
 			match(T__6);
 			}
@@ -1087,7 +1090,7 @@ public class SimpleLangParser extends Parser {
 		"\u0000\u0000-.\u0005\u0005\u0000\u0000./\u0003\f\u0006\u0000/0\u0005\u0006"+
 		"\u0000\u000002\u0001\u0000\u0000\u00001+\u0001\u0000\u0000\u000025\u0001"+
 		"\u0000\u0000\u000031\u0001\u0000\u0000\u000034\u0001\u0000\u0000\u0000"+
-		"46\u0001\u0000\u0000\u000053\u0001\u0000\u0000\u000067\u0003\f\u0006\u0000"+
+		"46\u0001\u0000\u0000\u000053\u0001\u0000\u0000\u000067\u0003\n\u0005\u0000"+
 		"78\u0005\u0007\u0000\u00008\u0007\u0001\u0000\u0000\u00009:\u0005\u0004"+
 		"\u0000\u0000:;\u0003\n\u0005\u0000;<\u0005\u0007\u0000\u0000<\t\u0001"+
 		"\u0000\u0000\u0000=B\u0003\f\u0006\u0000>?\u0005\u0006\u0000\u0000?A\u0003"+

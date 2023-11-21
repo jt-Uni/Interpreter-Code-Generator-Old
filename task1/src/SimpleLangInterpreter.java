@@ -1,50 +1,76 @@
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
-import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.*;
 
 public class SimpleLangInterpreter extends AbstractParseTreeVisitor<Integer> implements SimpleLangVisitor<Integer> {
 
-    private final Map<String, SimpleLangParser.DecContext> global_func = new HashMap<>();
-    private final Stack<Map<String, Integer>> frames = new Stack<>();
+    private final Map<String, SimpleLangParser.DecContext> globalFunctions = new HashMap<>();
+    private final Stack<SimpleLangParser.DecContext> decStack = new Stack<>();
+    private SimpleLangParser.DecContext currDec = null;
 
+    // Use Object so we can store bool and int
+    private final Map<String, Map<String, Integer>> functionVars = new HashMap<>();
+    private Map<String, Integer> localVars = null;
+
+    // Pass in command line arguments
     public Integer visitProgram(SimpleLangParser.ProgContext ctx, String[] args) {
-        for (int i = 0; i < ctx.dec().size(); ++i) {
-            SimpleLangParser.DecContext dec = ctx.dec(i);
-            global_func.put(dec.Idfr().getText(), dec);
-        }
+        // Initialize main function's args
+        Map<String, Integer> initVars = new HashMap<>();
+        functionVars.put("main", initVars);
+        localVars = functionVars.get("main");
 
-        SimpleLangParser.DecContext main = global_func.get("main");
+        // Process command line args for the main function
+        for (int i = 0; i < ctx.dec().size(); i++) {
+            globalFunctions.put(ctx.dec(i).Idfr().getText(), ctx.dec(i));
 
-        Map<String, Integer> newFrame = new HashMap<>();
-        for (String arg : args) {
-            if (arg.equals("true")) {
-                newFrame.put(main.Idfr().getText(), 1);
-            } else if (arg.equals("false")) {
-                newFrame.put(main.Idfr().getText(), 0);
-            } else {
-                newFrame.put(main.Idfr().getText(), Integer.parseInt(arg));
+            if (ctx.dec(i).Idfr().getText().equals("main")) {
+                currDec = ctx.dec(i);
+
+                for (int j = 0; j < args.length; j++) {
+                    localVars.put(ctx.dec(i).vardec().Idfr(j).getText(), parseArg(args[j]));
+                }
             }
         }
 
-        frames.push(newFrame);
-        return visit(main);
+        functionVars.put("main", localVars);
+        localVars = functionVars.get(currDec.Idfr().getText());
+
+        // Initialize localvars for each function
+        for (int i = 0; i < ctx.dec().size(); i++) {
+            if (!ctx.dec(i).Idfr().getText().equals("main")) {
+                functionVars.put(ctx.dec(i).Idfr().getText(), new HashMap<>());
+            }
+        }
+
+        int result = 0;
+
+        for (int i = 0; i < ctx.dec().size(); i++) {
+            if (ctx.dec(i).Idfr().getText().equals("main")) {
+                result = visit(ctx.dec(i).body());
+            }
+        }
+
+        return result;
     }
 
-    @Override public Integer visitProg(SimpleLangParser.ProgContext ctx)
-    {
-
-        throw new RuntimeException("Should not be here!");
-
+    private int parseArg(String arg) {
+        if (arg.equals("true")) {
+            return 1;
+        } else if (arg.equals("false")) {
+            return 0;
+        } else {
+            return Integer.parseInt(arg);
+        }
     }
 
-    @Override public Integer visitDec(SimpleLangParser.DecContext ctx)
-    {
+    @Override
+    public Integer visitProg(SimpleLangParser.ProgContext ctx) {
+        return null;
+    }
 
-        Integer returnValue = visit(ctx.body());
-        frames.pop();
-        return returnValue;
-
+    @Override
+    public Integer visitDec(SimpleLangParser.DecContext ctx) {
+        return null;
     }
 
     @Override
@@ -52,130 +78,216 @@ public class SimpleLangInterpreter extends AbstractParseTreeVisitor<Integer> imp
         return null;
     }
 
-    @Override public Integer visitBody(SimpleLangParser.BodyContext ctx) {
+    @Override
+    public Integer visitBody(SimpleLangParser.BodyContext ctx) {
+        localVars = functionVars.get(currDec.Idfr().getText());
 
-        Integer returnValue = null;
-
-        for (int i = 0; i < ctx.exp().size(); ++i) {
-            SimpleLangParser.ExpContext exp = ctx.exp(i);
-            returnValue = visit(exp);
+        for (int i = 0; i < ctx.Idfr().size(); ++i) {
+            localVars.put(ctx.Idfr().get(i).getText(), visit(ctx.exp().get(i)));
         }
-        return returnValue;
 
+        functionVars.put(currDec.Idfr().getText(), localVars);
+        return visit(ctx.ene());
     }
 
     @Override
     public Integer visitBlock(SimpleLangParser.BlockContext ctx) {
-        Integer returnValue = null;
-        SimpleLangParser.EneContext eneContext = ctx.ene();
+        return visit(ctx.ene());
+    }
 
-        for (int i = 0; i < eneContext.exp().size(); ++i) {
-            SimpleLangParser.ExpContext exp = eneContext.exp(i);
-            returnValue = visit(exp);
+    @Override
+    public Integer visitEne(SimpleLangParser.EneContext ctx) {
+        Integer returnValue = null;
+        // todo - when boolLit is under block, it doesn't return
+
+        for (int i = 0; i < ctx.exp().size(); i++) {
+//            if (i==ctx.expr().size()-1 & (ctx.expr(i).getText().equals("true") || ctx.expr(i).getText().equals("false"))){
+//                if (ctx.expr(i).getText().equals("true")){
+//                    return 1;
+//                } else{
+//                    return 0;
+//                }
+//            }
+            // when visit(ctx.expr()) it doesn't go to visitBool or visitInt todo
+            returnValue = visit(ctx.exp(i));
         }
 
         return returnValue;
     }
 
     @Override
-    public Integer visitEne(SimpleLangParser.EneContext ctx) {
+    public Integer visitBoolExpr(SimpleLangParser.BoolExprContext ctx) {
+        if (ctx.BoolLit().getText().equals("false")){
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    @Override
+    public Integer visitIdExpr(SimpleLangParser.IdExprContext ctx) {
+        localVars = functionVars.get(currDec.Idfr().getText());
+        return localVars.get(ctx.Idfr().getText());
+    }
+
+    @Override
+    public Integer visitIntExpr(SimpleLangParser.IntExprContext ctx) {
+        return Integer.parseInt(ctx.getText());
+    }
+
+    @Override
+    public Integer visitAssignExpr(SimpleLangParser.AssignExprContext ctx) {
+        localVars = functionVars.get(currDec.Idfr().getText());
+        localVars.replace(ctx.Idfr().getText(), visit(ctx.exp()));
+        functionVars.put(currDec.Idfr().getText(), localVars);
         return null;
     }
 
     @Override
-    public Integer visitBoolExpr(SimpleLangParser.BoolExprContext ctx) {
-        return null;
-    }
+    public Integer visitBinOpExpr(SimpleLangParser.BinOpExprContext ctx) {
+        Integer lhs = visit(ctx.exp(0));
+        Integer rhs = visit(ctx.exp(1));
 
-    @Override public Integer visitAssignExpr(SimpleLangParser.AssignExprContext ctx)
-    {
+        String ctxOp = ctx.op.getText();
 
-        SimpleLangParser.ExpContext rhs = ctx.exp();
-        frames.peek().replace(ctx.Idfr().getText(), visit(rhs));
-        return null;
-
-    }
-
-    @Override public Integer visitBinOpExpr(SimpleLangParser.BinOpExprContext ctx) {
-        SimpleLangParser.ExpContext operand1 = ctx.exp(0);
-        Integer oprnd1 = visit(operand1);
-        SimpleLangParser.ExpContext operand2 = ctx.exp(1);
-        Integer oprnd2 = visit(operand2);
-
-        return switch (((TerminalNode) (ctx.BinOP().getChild(0))).getSymbol().getType()) {
-            case SimpleLangParser.Eq -> (Objects.equals(oprnd1, oprnd2)) ? 1 : 0;
-            case SimpleLangParser.Less -> (oprnd1 < oprnd2) ? 1 : 0;
-            case SimpleLangParser.LessEq -> (oprnd1 <= oprnd2) ? 1 : 0;
-            case SimpleLangParser.Greater -> (oprnd1 > oprnd2) ? 1 : 0;
-            case SimpleLangParser.GreaterEq -> (oprnd1 >= oprnd2) ? 1 : 0;
-            case SimpleLangParser.Plus -> oprnd1 + oprnd2;
-            case SimpleLangParser.Minus -> oprnd1 - oprnd2;
-            case SimpleLangParser.Times -> oprnd1 * oprnd2;
-            default -> throw new RuntimeException("Shouldn't be here - wrong binary operator.");
-        };
+        switch (ctxOp) {
+            case "+":
+                return (lhs + rhs);
+            case "-":
+                return (lhs - rhs);
+            case "*":
+                return (lhs * rhs);
+            case "/":
+                return (lhs / rhs);
+            case "==":
+                return ((lhs.equals(rhs)) ? 1 : 0);
+            case "<":
+                return ((lhs < rhs) ? 1 : 0);
+            case ">":
+                return ((lhs > rhs) ? 1 : 0);
+            case "<=":
+                return ((lhs <= rhs) ? 1 : 0);
+            case ">=":
+                return ((lhs >= rhs) ? 1 : 0);
+            case "^":
+                if ((lhs  == 1  & rhs == 1) || (lhs  == 0  & rhs == 0)){
+                    return 0;
+                } else {
+                    return 1;
+                }
+            case "&":
+                if (lhs  == 1  & rhs == 1){
+                    return 1;
+                } else {
+                    return 0;
+                }
+            case "|":
+                if (lhs  == 0  & rhs == 0){
+                    return 0;
+                } else {
+                    return 1;
+                }
+            default:
+                throw new RuntimeException("Shouldn't be here - wrong binary operator.");
+        }
     }
 
     @Override
     public Integer visitCallFunExpr(SimpleLangParser.CallFunExprContext ctx) {
-        return null;
+        // function to be called
+
+        List<Integer> argsValueList = new ArrayList<>();
+        for (int i = 0; i < ctx.args().exp().size(); i++) {
+            // pass the args like in main to the call function
+            if (ctx.args().exp(i).getText().equals("true")) {
+                argsValueList.add(1);
+            } else if (ctx.args().exp(i).getText().equals("false")) {
+                argsValueList.add(0);
+            } else {
+                // we still need to get var from main var-list
+                argsValueList.add(visit(ctx.args().exp(i)));
+            } // get the args in order
+        }
+
+        // let's say push main
+        decStack.push(currDec);
+
+        currDec = globalFunctions.get(ctx.Idfr().getText());
+        localVars = functionVars.get(currDec.Idfr().getText());
+
+        // put args into function's vardec
+        for (int i = 0; i < currDec.vardec().Idfr().size(); i++) {
+            localVars.put(currDec.vardec().Idfr(i).getText(), argsValueList.get(i));
+        }
+
+        // visit the body to init other variable
+        for (int i = 0; i < currDec.body().Idfr().size(); i++) {
+            localVars.put(currDec.body().Idfr(i).getText(), visit(currDec.body().exp(i)));
+        }
+
+        // todo
+        functionVars.put(currDec.Idfr().getText(), localVars);
+        Integer returnValue = null;
+        if (currDec.Type().getText().equals("unit")) {
+            visit(currDec.body().ene());
+        } else {
+            // Modify the return statement to sum the results from recursive calls
+            returnValue = visit(currDec.body().ene());
+            if (returnValue == null) {
+                throw new RuntimeException("Function must return a value");
+            }
+        }
+        currDec = decStack.pop();
+        return returnValue != null ? returnValue : 0;
     }
 
-    @Override public Integer visitBlockExpr(SimpleLangParser.BlockExprContext ctx) {
+
+    @Override
+    public Integer visitBlockExpr(SimpleLangParser.BlockExprContext ctx) {
         return visit(ctx.block());
     }
 
-    @Override public Integer visitIfExpr(SimpleLangParser.IfExprContext ctx)
-    {
-
-        SimpleLangParser.ExpContext cond = ctx.exp();
-        Integer condValue = visit(cond);
-        if (condValue > 0) {
-
-            SimpleLangParser.BlockContext thenBlock = ctx.block(0);
-            return visit(thenBlock);
-
+    @Override
+    public Integer visitIfExpr(SimpleLangParser.IfExprContext ctx) {
+        // 1 * 1 == 1 == true
+        if (visit(ctx.exp()) == 1) {
+            return visit(ctx.block(0)); // Visit only the true branch
         } else {
-
-            SimpleLangParser.BlockContext elseBlock = ctx.block(1);
-            return visit(elseBlock);
-
+            return visit(ctx.block(1)); // Visit only the false branch
         }
-
     }
 
     @Override
     public Integer visitWhileExpr(SimpleLangParser.WhileExprContext ctx) {
+        // 0 here means false
+        while(visit(ctx.exp()) > 0){
+            visit(ctx.block());
+        }
         return null;
     }
 
     @Override
     public Integer visitForExpr(SimpleLangParser.ForExprContext ctx) {
+        do {
+            visit(ctx.block());
+        } while (visit(ctx.exp()) > 0);
         return null;
     }
 
-    @Override public Integer visitPrintExpr(SimpleLangParser.PrintExprContext ctx) {
-
-        SimpleLangParser.ExpContext exp = ctx.exp();
-
-        if (((TerminalNode) exp.getChild(0)).getSymbol().getType() == SimpleLangParser.Space) {
-
+    @Override
+    public Integer visitPrintExpr(SimpleLangParser.PrintExprContext ctx) {
+        if (ctx.exp().getText().equals("space")){
             System.out.print(" ");
-
-        } else if (((TerminalNode) exp.getChild(0)).getSymbol().getType() == SimpleLangParser.NewLine) {
-
+        } else if (ctx.exp().getText().equals("newline")){
             System.out.println();
-
         } else {
-
-            System.out.print(visit(exp));
-
+            System.out.print(visit(ctx.exp()));
         }
-
         return null;
-
     }
 
-    @Override public Integer visitSpaceExpr(SimpleLangParser.SpaceExprContext ctx) {
+    @Override
+    public Integer visitSpaceExpr(SimpleLangParser.SpaceExprContext ctx) {
         return null;
     }
 
@@ -192,17 +304,5 @@ public class SimpleLangInterpreter extends AbstractParseTreeVisitor<Integer> imp
     @Override
     public Integer visitArgs(SimpleLangParser.ArgsContext ctx) {
         return null;
-    }
-
-    @Override public Integer visitIdExpr(SimpleLangParser.IdExprContext ctx)
-    {
-        return frames.peek().get(ctx.Idfr().getText());
-    }
-
-    @Override public Integer visitIntExpr(SimpleLangParser.IntExprContext ctx)
-    {
-
-        return Integer.parseInt(ctx.IntLit().getText());
-
     }
 }

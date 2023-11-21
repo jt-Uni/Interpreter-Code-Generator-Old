@@ -3,7 +3,7 @@ grammar SimpleLang;
 prog: dec+ EOF ;
 dec:	Type Idfr '(' vardec ')' body ;
 vardec:	(Type Idfr (',' Type Idfr)*)? ;
-body:   '{' (Type Idfr ':=' exp ';')* exp '}';
+body:   '{' (Type Idfr ':=' exp ';')* ene '}';
 block:	'{' ene '}';
 ene:    exp (';' exp)*;
 
