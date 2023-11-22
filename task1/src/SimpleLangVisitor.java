@@ -46,12 +46,47 @@ public interface SimpleLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEne(SimpleLangParser.EneContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code CallFunExpr}
+	 * labeled alternative in {@link SimpleLangParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCallFunExpr(SimpleLangParser.CallFunExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code WhileExpr}
+	 * labeled alternative in {@link SimpleLangParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhileExpr(SimpleLangParser.WhileExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code SkipExpr}
+	 * labeled alternative in {@link SimpleLangParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSkipExpr(SimpleLangParser.SkipExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code BoolExpr}
 	 * labeled alternative in {@link SimpleLangParser#exp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitBoolExpr(SimpleLangParser.BoolExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IfExpr}
+	 * labeled alternative in {@link SimpleLangParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfExpr(SimpleLangParser.IfExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NewlineExpr}
+	 * labeled alternative in {@link SimpleLangParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNewlineExpr(SimpleLangParser.NewlineExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code IdExpr}
 	 * labeled alternative in {@link SimpleLangParser#exp}.
@@ -60,12 +95,33 @@ public interface SimpleLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIdExpr(SimpleLangParser.IdExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code IntExpr}
+	 * Visit a parse tree produced by the {@code ExprBinOpExpr}
 	 * labeled alternative in {@link SimpleLangParser#exp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIntExpr(SimpleLangParser.IntExprContext ctx);
+	T visitExprBinOpExpr(SimpleLangParser.ExprBinOpExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code SpaceExpr}
+	 * labeled alternative in {@link SimpleLangParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSpaceExpr(SimpleLangParser.SpaceExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code PrintExpr}
+	 * labeled alternative in {@link SimpleLangParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrintExpr(SimpleLangParser.PrintExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BlockExpr}
+	 * labeled alternative in {@link SimpleLangParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBlockExpr(SimpleLangParser.BlockExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code AssignExpr}
 	 * labeled alternative in {@link SimpleLangParser#exp}.
@@ -81,33 +137,12 @@ public interface SimpleLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBinOpExpr(SimpleLangParser.BinOpExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code CallFunExpr}
+	 * Visit a parse tree produced by the {@code IntExpr}
 	 * labeled alternative in {@link SimpleLangParser#exp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCallFunExpr(SimpleLangParser.CallFunExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code BlockExpr}
-	 * labeled alternative in {@link SimpleLangParser#exp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBlockExpr(SimpleLangParser.BlockExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code IfExpr}
-	 * labeled alternative in {@link SimpleLangParser#exp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIfExpr(SimpleLangParser.IfExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code WhileExpr}
-	 * labeled alternative in {@link SimpleLangParser#exp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWhileExpr(SimpleLangParser.WhileExprContext ctx);
+	T visitIntExpr(SimpleLangParser.IntExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ForExpr}
 	 * labeled alternative in {@link SimpleLangParser#exp}.
@@ -115,34 +150,6 @@ public interface SimpleLangVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitForExpr(SimpleLangParser.ForExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code PrintExpr}
-	 * labeled alternative in {@link SimpleLangParser#exp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPrintExpr(SimpleLangParser.PrintExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code SpaceExpr}
-	 * labeled alternative in {@link SimpleLangParser#exp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSpaceExpr(SimpleLangParser.SpaceExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code NewlineExpr}
-	 * labeled alternative in {@link SimpleLangParser#exp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNewlineExpr(SimpleLangParser.NewlineExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code SkipExpr}
-	 * labeled alternative in {@link SimpleLangParser#exp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSkipExpr(SimpleLangParser.SkipExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SimpleLangParser#args}.
 	 * @param ctx the parse tree

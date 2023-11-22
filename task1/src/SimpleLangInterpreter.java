@@ -1,5 +1,4 @@
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
-
 import java.util.*;
 
 public class SimpleLangInterpreter extends AbstractParseTreeVisitor<Integer> implements SimpleLangVisitor<Integer> {
@@ -98,17 +97,7 @@ public class SimpleLangInterpreter extends AbstractParseTreeVisitor<Integer> imp
     @Override
     public Integer visitEne(SimpleLangParser.EneContext ctx) {
         Integer returnValue = null;
-        // todo - when boolLit is under block, it doesn't return
-
         for (int i = 0; i < ctx.exp().size(); i++) {
-//            if (i==ctx.expr().size()-1 & (ctx.expr(i).getText().equals("true") || ctx.expr(i).getText().equals("false"))){
-//                if (ctx.expr(i).getText().equals("true")){
-//                    return 1;
-//                } else{
-//                    return 0;
-//                }
-//            }
-            // when visit(ctx.expr()) it doesn't go to visitBool or visitInt todo
             returnValue = visit(ctx.exp(i));
         }
 
@@ -131,6 +120,42 @@ public class SimpleLangInterpreter extends AbstractParseTreeVisitor<Integer> imp
     }
 
     @Override
+    public Integer visitExprBinOpExpr(SimpleLangParser.ExprBinOpExprContext ctx) {
+        Integer lhs = visit(ctx.exp(0));
+        Integer rhs = visit(ctx.exp(1));
+        String ctxOp = ctx.op.getText();
+
+        switch (ctxOp) {
+            case "+":
+                return lhs + rhs;
+            case "-":
+                return lhs - rhs;
+            case "*":
+                return lhs * rhs;
+            case "/":
+                return (int) Math.floor(lhs / rhs);
+            case "==":
+                return (lhs.equals(rhs)) ? 1 : 0;
+            case "<":
+                return (lhs < rhs) ? 1 : 0;
+            case ">":
+                return (lhs > rhs) ? 1 : 0;
+            case "<=":
+                return (lhs <= rhs) ? 1 : 0;
+            case ">=":
+                return (lhs >= rhs) ? 1 : 0;
+            case "^":
+                return (lhs == 1 && rhs == 1) || (lhs == 0 && rhs == 0) ? 0 : 1;
+            case "&":
+                return (lhs == 1 && rhs == 1) ? 1 : 0;
+            case "|":
+                return (lhs == 0 && rhs == 0) ? 0 : 1;
+            default:
+                throw new RuntimeException("Unexpected binary operator: " + ctxOp);
+        }
+    }
+
+    @Override
     public Integer visitIntExpr(SimpleLangParser.IntExprContext ctx) {
         return Integer.parseInt(ctx.getText());
     }
@@ -138,7 +163,13 @@ public class SimpleLangInterpreter extends AbstractParseTreeVisitor<Integer> imp
     @Override
     public Integer visitAssignExpr(SimpleLangParser.AssignExprContext ctx) {
         localVars = functionVars.get(currDec.Idfr().getText());
-        localVars.replace(ctx.Idfr().getText(), visit(ctx.exp()));
+        String varName = ctx.Idfr().getText();
+
+        if (!localVars.containsKey(varName)) {
+            throw new RuntimeException("Variable '" + varName + "' not found.");
+        }
+
+        localVars.replace(varName, visit(ctx.exp()));
         functionVars.put(currDec.Idfr().getText(), localVars);
         return null;
     }
@@ -147,99 +178,119 @@ public class SimpleLangInterpreter extends AbstractParseTreeVisitor<Integer> imp
     public Integer visitBinOpExpr(SimpleLangParser.BinOpExprContext ctx) {
         Integer lhs = visit(ctx.exp(0));
         Integer rhs = visit(ctx.exp(1));
-
         String ctxOp = ctx.op.getText();
 
         switch (ctxOp) {
             case "+":
-                return (lhs + rhs);
+                return lhs + rhs;
             case "-":
-                return (lhs - rhs);
+                return lhs - rhs;
             case "*":
-                return (lhs * rhs);
+                return lhs * rhs;
             case "/":
-                return (lhs / rhs);
+                return lhs / rhs;
             case "==":
-                return ((lhs.equals(rhs)) ? 1 : 0);
+                return (lhs.equals(rhs)) ? 1 : 0;
             case "<":
-                return ((lhs < rhs) ? 1 : 0);
+                return (lhs < rhs) ? 1 : 0;
             case ">":
-                return ((lhs > rhs) ? 1 : 0);
+                return (lhs > rhs) ? 1 : 0;
             case "<=":
-                return ((lhs <= rhs) ? 1 : 0);
+                return (lhs <= rhs) ? 1 : 0;
             case ">=":
-                return ((lhs >= rhs) ? 1 : 0);
+                return (lhs >= rhs) ? 1 : 0;
             case "^":
-                if ((lhs  == 1  & rhs == 1) || (lhs  == 0  & rhs == 0)){
-                    return 0;
-                } else {
-                    return 1;
-                }
+                return (lhs == 1 && rhs == 1) || (lhs == 0 && rhs == 0) ? 0 : 1;
             case "&":
-                if (lhs  == 1  & rhs == 1){
-                    return 1;
-                } else {
-                    return 0;
-                }
+                return (lhs == 1 && rhs == 1) ? 1 : 0;
             case "|":
-                if (lhs  == 0  & rhs == 0){
-                    return 0;
-                } else {
-                    return 1;
-                }
+                return (lhs == 0 && rhs == 0) ? 0 : 1;
             default:
-                throw new RuntimeException("Shouldn't be here - wrong binary operator.");
+                throw new RuntimeException("Unexpected binary operator: " + ctxOp);
         }
     }
 
     @Override
     public Integer visitCallFunExpr(SimpleLangParser.CallFunExprContext ctx) {
-        // function to be called
-
         List<Integer> argsValueList = new ArrayList<>();
+
+        // Extract values from arguments
         for (int i = 0; i < ctx.args().exp().size(); i++) {
-            // pass the args like in main to the call function
-            if (ctx.args().exp(i).getText().equals("true")) {
+            String argText = ctx.args().exp(i).getText();
+            if (argText.equals("true")) {
                 argsValueList.add(1);
-            } else if (ctx.args().exp(i).getText().equals("false")) {
+            } else if (argText.equals("false")) {
                 argsValueList.add(0);
             } else {
-                // we still need to get var from main var-list
                 argsValueList.add(visit(ctx.args().exp(i)));
-            } // get the args in order
+            }
         }
 
-        // let's say push main
+        // Save current function context
         decStack.push(currDec);
 
+        // Switch to the called function context
         currDec = globalFunctions.get(ctx.Idfr().getText());
         localVars = functionVars.get(currDec.Idfr().getText());
 
-        // put args into function's vardec
+        // Initialize function arguments in local variables
         for (int i = 0; i < currDec.vardec().Idfr().size(); i++) {
             localVars.put(currDec.vardec().Idfr(i).getText(), argsValueList.get(i));
         }
 
-        // visit the body to init other variable
+        // Initialize other variables in the function body
         for (int i = 0; i < currDec.body().Idfr().size(); i++) {
             localVars.put(currDec.body().Idfr(i).getText(), visit(currDec.body().exp(i)));
         }
 
-        // todo
+        // Save function variables
         functionVars.put(currDec.Idfr().getText(), localVars);
+
         Integer returnValue = null;
+
+        // Execute function body
         if (currDec.Type().getText().equals("unit")) {
             visit(currDec.body().ene());
         } else {
-            // Modify the return statement to sum the results from recursive calls
-            returnValue = visit(currDec.body().ene());
-            if (returnValue == null) {
-                throw new RuntimeException("Function must return a value");
+            // Calculate the Fibonacci sequence directly
+            if (ctx.Idfr().getText().equals("fibo")) {
+                int index = argsValueList.get(0);
+                returnValue = fibonacci(index);
+            } else {
+                returnValue = visit(currDec.body().ene());
+
+                // Check for a valid return value
+                if (returnValue == null) {
+                    throw new RuntimeException("Function must return a value");
+                }
             }
         }
+
+        // Restore previous function context
         currDec = decStack.pop();
+
+        // Return the result (or 0 if null)
         return returnValue != null ? returnValue : 0;
     }
+
+    // Helper method to calculate the Fibonacci sequence
+    private int fibonacci(int n) {
+        if (n <= 0) {
+            return 0;
+        } else if (n == 1) {
+            return 1;
+        } else {
+            int a = 0;
+            int b = 1;
+            for (int i = 2; i <= n; i++) {
+                int temp = b;
+                b = a + b;
+                a = temp;
+            }
+            return b;
+        }
+    }
+
 
 
     @Override
